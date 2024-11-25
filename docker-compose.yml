@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  webserver:
+    container_name: webserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./www:/var/www           # 网站根目录
+      - apache-config:/etc/apache2  # Apache 配置目录
+      - php-config:/usr/local/etc/php  # PHP 配置目录
+    ports:
+      - "80:80"                      # 映射端口 
+      - "443:443"                      
+    depends_on:
+      - db
+    restart: always                    # 容器随 Docker 启动
+
+  db:
+    container_name: mysql
+    image: mysql:5.7
+    volumes:
+      - ./mysql/data:/var/lib/mysql    # MySQL 数据目录
+      - ./mysql/config/my.cnf:/etc/my.cnf # MySQL 配置目录
+      - ./mysql/log:/var/log/mysql   # MySQL 日志目录
+      
+    environment:
+      MYSQL_ROOT_PASSWORD: root        # 设置 MySQL root 密码
+      #MYSQL_DATABASE: test         # 创建数据库
+    ports:
+      - "3306:3306"                    # 映射端口 3307 到 3306
+    restart: always                    # 容器随 Docker 启动
+
+volumes:
+  php-config: 
+  apache-config:
+                          
+                                                 
