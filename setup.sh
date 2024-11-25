@@ -223,6 +223,17 @@ catcomposelogs() {
 maintenancefun() {
 
     lampinstall() {
+
+        
+        if [ ! -d "mysql/data" ]; then
+    
+        mkdir -p mysql/data  
+        fi
+        if [ ! -d "mysql/log" ]; then
+    
+        mkdir -p mysql/log  
+        fi
+
         docker-compose up -d --build 
 
         _blue '创建命名卷软连接'
